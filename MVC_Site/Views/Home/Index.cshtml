@@ -1,0 +1,149 @@
+﻿@model SignInModel
+@{
+    ViewBag.Title = "Home";
+    bool isAuthenticated = User.Identity.IsAuthenticated;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            padding-top: 80px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffc107;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Primary button color (blue) */
+            border-color: #007bff; /* Primary button border color (blue) */
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3; /* Darker blue on hover */
+                border-color: #0056b3; /* Darker blue border on hover */
+            }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            @if (isAuthenticated)
+            {
+                <a class="navbar-brand" href="#">Social Site</a>
+            }
+            else
+            {
+                <a class="navbar-brand" href="#">Sign In</a>
+            }
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    @if (isAuthenticated)
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Register
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email)
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password)
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Sign In</button>
+                                <a class="btn btn-primary" href="/Register">Create Account</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (isAuthenticated)
+    {
+        <div class="container mt-4">
+            <h1>Welcome, User!</h1>
+            <p>This is your personalized homepage. Feel free to explore and interact with other users.</p>
+        </div>
+    }
+
+    <div class="container mt-4">
+        <h2>Latest Posts</h2>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        User 1
+                    </div>
+                    <div class="card-body">
+                        <p>This is a post by User 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        User 2
+                    </div>
+                    <div class="card-body">
+                        <p>This is another post by User 2. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more posts here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
